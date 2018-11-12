@@ -1,7 +1,6 @@
 package com.demo;
 
 import com.demo.contract.ContractFactory;
-import com.demo.contract.Refund;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthMining;
@@ -62,7 +61,7 @@ public class web3 {
     }
 
     //簽署交易
-    public void SignTraction() {
+    public void SignTransaction(Credentials credentials,) {
 
 
     }

@@ -1,31 +1,33 @@
 package com.demo;
 
+import com.demo.contract.ContractFactory;
 import com.demo.contract.Refund;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthMining;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.Contract;
-import org.web3j.tx.ManagedTransaction;
-import org.web3j.tx.Transfer;
+import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Convert;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
+
 
 public class web3 {
     public String url;
     private Web3j web3j;
-    public web3(){
-        web3j=Web3j.build(new HttpService());
+
+    public web3() {
+        web3j = Web3j.build(new HttpService());
     }
-    public web3(String url){
-        this.url=url;
-        web3j=Web3j.build(new HttpService(this.url));
+
+    public web3(String url) {
+        this.url = url;
+        web3j = Web3j.build(new HttpService(this.url));
     }
-    public boolean GetMiningStatus(){
+
+    public boolean GetMiningStatus() {
         EthMining ethMining = null;
         try {
             ethMining = web3j.ethMining().send();
@@ -35,39 +37,35 @@ public class web3 {
         boolean isMining = ethMining.isMining();
         return isMining;
     }
-    public BigInteger ConvertToWei(String _value, Convert.Unit uint){
+
+    public BigInteger ConvertToWei(String _value, Convert.Unit uint) {
         BigInteger value = Convert.toWei(_value, uint).toBigInteger();
         return value;
     }
-    public BigInteger ConvertFromWei(String _value, Convert.Unit uint){
+
+    public BigInteger ConvertFromWei(String _value, Convert.Unit uint) {
         BigInteger value = Convert.fromWei(_value, uint).toBigInteger();
         return value;
     }
-
-    //deploy contract
-    public void AA(){
-        Credentials credentials=Credentials.create("af58e057cb1ccbcf31bed1dff0a56910e36a6e5b5c2e3e4cdcc742bbac662875");
-        Refund refund=null;
+    public Contract LoadContract(String contractName, String contractAddress) {
+        Credentials credentials = Credentials.create("43cbbbf7643cd3f8bdf54d70014cd5fcc313b243aadec7081d16c1ad04ee4b8f");
+        Contract contract = null;
+        ContractFactory contractFactory = new ContractFactory();
+        BigInteger contractGasLimit = DefaultGasProvider.GAS_LIMIT;
+        BigInteger contractGasPrice = DefaultGasProvider.GAS_PRICE;
         try {
-            refund=Refund.deploy(web3j,credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT).send();
-            System.out.println(refund.isValid());
+            contract = contractFactory.LoadContract(contractName, contractAddress, web3j, credentials, contractGasPrice, contractGasLimit);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return contract;
+    }
+
+    //簽署交易
+    public void SignTraction() {
+
 
     }
-    //交易
-    public void BB(){
-        String toAddress = "0x85F53ADc4e0A109184A6E006C314E8430dfb0152";
-        Credentials credentials=Credentials.create("af58e057cb1ccbcf31bed1dff0a56910e36a6e5b5c2e3e4cdcc742bbac662875");
-        TransactionReceipt transactionReceipt = null;
-        try {
-            transactionReceipt = Transfer.sendFunds(web3j, credentials, toAddress, BigDecimal.valueOf(500), Convert.Unit.ETHER).send();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        System.out.println(transactionReceipt);
-    }
 
 }

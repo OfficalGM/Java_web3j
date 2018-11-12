@@ -59,11 +59,11 @@ public class Refund extends Contract {
 
     public static final String FUNC_SETTREE = "setTree";
 
-    public static final Event LOGRECEIVEDFUNDS_EVENT = new Event("LogReceivedFunds", 
+    public static final Event LOGRECEIVEDFUNDS_EVENT = new Event("LogReceivedFunds",
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Uint256>() {}));
     ;
 
-    public static final Event LOGRETURNEDFUNDS_EVENT = new Event("LogReturnedFunds", 
+    public static final Event LOGRETURNEDFUNDS_EVENT = new Event("LogReturnedFunds",
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Uint256>() {}));
     ;
 
@@ -94,35 +94,35 @@ public class Refund extends Contract {
     }
 
     public RemoteCall<byte[]> tree(BigInteger param0) {
-        final Function function = new Function(FUNC_TREE, 
+        final Function function = new Function(FUNC_TREE,
                 Arrays.<Type>asList(new Uint256(param0)),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {}));
         return executeRemoteCallSingleValueReturn(function, byte[].class);
     }
 
     public RemoteCall<BigInteger> RecipteNumber() {
-        final Function function = new Function(FUNC_RECIPTENUMBER, 
-                Arrays.<Type>asList(), 
+        final Function function = new Function(FUNC_RECIPTENUMBER,
+                Arrays.<Type>asList(),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<String> owner() {
-        final Function function = new Function(FUNC_OWNER, 
-                Arrays.<Type>asList(), 
+        final Function function = new Function(FUNC_OWNER,
+                Arrays.<Type>asList(),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteCall<BigInteger> TreeNumber() {
-        final Function function = new Function(FUNC_TREENUMBER, 
-                Arrays.<Type>asList(), 
+        final Function function = new Function(FUNC_TREENUMBER,
+                Arrays.<Type>asList(),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public RemoteCall<Tuple3<String, String, BigInteger>> recipte(BigInteger param0) {
-        final Function function = new Function(FUNC_RECIPTE, 
+    public RemoteCall<Tuple3<String, String, BigInteger>> recipte(int param0) {
+        final Function function = new Function(FUNC_RECIPTE,
                 Arrays.<Type>asList(new Uint256(param0)),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Address>() {}, new TypeReference<Uint256>() {}));
         return new RemoteCall<Tuple3<String, String, BigInteger>>(
@@ -131,8 +131,8 @@ public class Refund extends Contract {
                     public Tuple3<String, String, BigInteger> call() throws Exception {
                         List<Type> results = executeCallMultipleValueReturn(function);
                         return new Tuple3<String, String, BigInteger>(
-                                (String) results.get(0).getValue(), 
-                                (String) results.get(1).getValue(), 
+                                (String) results.get(0).getValue(),
+                                (String) results.get(1).getValue(),
                                 (BigInteger) results.get(2).getValue());
                     }
                 });
@@ -205,32 +205,32 @@ public class Refund extends Contract {
     }
 
     public RemoteCall<BigInteger> getBalance() {
-        final Function function = new Function(FUNC_GETBALANCE, 
-                Arrays.<Type>asList(), 
+        final Function function = new Function(FUNC_GETBALANCE,
+                Arrays.<Type>asList(),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<TransactionReceipt> refundBalance() {
         final Function function = new Function(
-                FUNC_REFUNDBALANCE, 
-                Arrays.<Type>asList(), 
+                FUNC_REFUNDBALANCE,
+                Arrays.<Type>asList(),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> withdraw(BigInteger amount, String addr) {
         final Function function = new Function(
-                FUNC_WITHDRAW, 
+                FUNC_WITHDRAW,
                 Arrays.<Type>asList(new Uint256(amount),
-                new Address(addr)),
+                        new Address(addr)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> setTree(byte[] _roothash) {
         final Function function = new Function(
-                FUNC_SETTREE, 
+                FUNC_SETTREE,
                 Arrays.<Type>asList(new Bytes32(_roothash)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);

@@ -13,8 +13,8 @@ public class demo {
         System.out.println(web3.GetMiningStatus());
         System.out.println(web3.ConvertToWei("1", ETHER));
         System.out.println(web3.ConvertFromWei("5000000000000000000",ETHER));
-        web3.LoadContract(contractName,contractAddress);
-
+//        web3.LoadContract(contractName,contractAddress);
+        web3.SignTransaction();
     }
 
 

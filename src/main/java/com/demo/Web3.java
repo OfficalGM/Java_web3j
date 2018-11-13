@@ -67,7 +67,9 @@ public class Web3 {
 
     //簽署交易
     public void SignTransaction() {
-
+        Credentials credentials = Credentials.create("43cbbbf7643cd3f8bdf54d70014cd5fcc313b243aadec7081d16c1ad04ee4b8f");
+        RawTransactionManager rawTransactionManager=new RawTransactionManager(web3j,credentials);
+//        System.out.println(rawTransactionManager.);
 
     }
 

@@ -1,6 +1,7 @@
 package com.demo;
 
 import com.demo.contract.ContractFactory;
+import com.demo.contract.Refund;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
@@ -11,6 +12,7 @@ import org.web3j.protocol.core.methods.response.EthMining;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.Contract;
+import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
@@ -52,14 +54,13 @@ public class Web3 {
         BigInteger value = Convert.fromWei(_value, uint).toBigInteger();
         return value;
     }
-    public Contract LoadContract(String contractName, String contractAddress) {
-        Credentials credentials = Credentials.create("af58e057cb1ccbcf31bed1dff0a56910e36a6e5b5c2e3e4cdcc742bbac662875");
+    public Contract LoadContract(String privatekey,String contractName, String contractAddress) {
+        Credentials credentials = Credentials.create(privatekey);
         Contract contract = null;
         ContractFactory contractFactory = new ContractFactory();
-        BigInteger contractGasLimit = DefaultGasProvider.GAS_LIMIT;
-        BigInteger contractGasPrice = DefaultGasProvider.GAS_PRICE;
         try {
-            contract = contractFactory.LoadContract(contractName, contractAddress, web3j, credentials, contractGasPrice, contractGasLimit);
+            ContractGasProvider contractGasProvider=contractFactory.GetInfo();
+            contract = contractFactory.LoadContract(contractName, contractAddress, web3j, credentials, contractGasProvider);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,8 +81,6 @@ public class Web3 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
     public BigInteger GetNonce(String address){
         EthGetTransactionCount ethGetTransactionCount = null;

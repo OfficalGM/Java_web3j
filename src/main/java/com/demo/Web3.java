@@ -1,7 +1,6 @@
 package com.demo;
 
 import com.demo.contract.ContractFactory;
-import com.demo.contract.Refund;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
@@ -18,8 +17,8 @@ import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.concurrent.ExecutionException;
 import static org.web3j.utils.Convert.Unit.ETHER;
-
 
 public class Web3 {
     public String url;
@@ -54,8 +53,8 @@ public class Web3 {
         BigInteger value = Convert.fromWei(_value, uint).toBigInteger();
         return value;
     }
-    public Contract LoadContract(String privatekey,String contractName, String contractAddress) {
-        Credentials credentials = Credentials.create(privatekey);
+    public Contract LoadContract(String secretKey,String contractName, String contractAddress) {
+        Credentials credentials = Credentials.create(secretKey);
         Contract contract = null;
         ContractFactory contractFactory = new ContractFactory();
         try {
@@ -68,19 +67,23 @@ public class Web3 {
     }
 
     //簽署交易
-    public void SignTransaction(String privatekey,BigInteger nonce,String toAddress) {
-        Credentials credentials = Credentials.create(privatekey);
+    public String SignTransaction(String secretKey,BigInteger nonce,String toAddress) {
+        Credentials credentials = Credentials.create(secretKey);
         BigInteger contractGasLimit = DefaultGasProvider.GAS_LIMIT;
         BigInteger contractGasPrice = DefaultGasProvider.GAS_PRICE;
         RawTransaction rawTransaction=RawTransaction.createTransaction(nonce,contractGasPrice,contractGasLimit,toAddress,ConvertToWei("5",ETHER),"pay");
         byte []signedMessage= TransactionEncoder.signMessage(rawTransaction,credentials);
         String hexValue = Numeric.toHexString(signedMessage);
+        EthSendTransaction ethSendTransaction = null;
         try {
-            EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(hexValue).send();
-            System.out.println(ethSendTransaction.getTransactionHash());
-        } catch (IOException e) {
+            ethSendTransaction = web3j.ethSendRawTransaction(hexValue).sendAsync().get();
+            return ethSendTransaction.getTransactionHash();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        return null;
     }
     public BigInteger GetNonce(String address){
         EthGetTransactionCount ethGetTransactionCount = null;

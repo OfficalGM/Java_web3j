@@ -17,8 +17,7 @@ public class ContractFactory {
 
     public Contract LoadContract(String contractName, String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
         if (contractName.equalsIgnoreCase("Refund")) {
-            return Refund.load(contractAddress, web3j, credentials, gasPrice, gasLimit);
-//            return new Refund(contractAddress,web3j,credentials,gasPrice,gasLimit);
+            return new Refund(contractAddress,web3j,credentials,gasPrice,gasLimit);
         }
         return null;
     }

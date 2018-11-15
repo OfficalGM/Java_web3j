@@ -8,7 +8,7 @@ public class demo {
 
     public static void main(String args[]) {
 //        String url="https://ropsten.infura.io/v3/";
-//        String privatekey="43cbbbf7643cd3f8bdf54d70014cd5fcc313b243aadec7081d16c1ad04ee4b8f";
+//        String privatekey="";
 //        Web3 web3=new Web3();
 //        web3.GetMiningStatus();
 //        String contractAddress="0xd44af5c682157f493ba2ebede6e0506428debf67";
@@ -31,7 +31,7 @@ public class demo {
 //        System.out.println(((Refund)refund).getBalance().send());
 //        System.out.println(((Refund)refund).refundBalance().send());
 //        web3.SignTransaction();
-        
+
     }
 
 

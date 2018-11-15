@@ -7,8 +7,8 @@ public class Node {
     public String hash=null;
     public Node left;
     public Node right;
-    public HashMap<String, String> hashmap;
-
+//    public HashMap<String, String> hashmap;
+//    public String[] nodeData;
     public Node(int id, Node left, Node right) {
         this.id = id;
         this.left = left;
@@ -16,7 +16,9 @@ public class Node {
         if (left != null || right != null) {
             this.hash = HashUtil.sha256(this.left.hash + this.right.hash);
         }else{
-            this.hashmap=new HashMap<>();
+
+//            this.nodeData=new String[1];
+//            this.hashmap=new HashMap<>();
         }
     }
 }

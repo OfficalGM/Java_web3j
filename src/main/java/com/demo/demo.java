@@ -2,6 +2,8 @@ package com.demo;
 
 
 
+import com.demo.FBHT.FBHT;
+
 import static org.web3j.utils.Convert.Unit.ETHER;
 
 public class demo {
@@ -31,7 +33,11 @@ public class demo {
 //        System.out.println(((Refund)refund).getBalance().send());
 //        System.out.println(((Refund)refund).refundBalance().send());
 //        web3.SignTransaction();
-
+        FBHT fbht=new FBHT(4);
+        for(int i=0;i<8;i++){
+            fbht.put(i+"");
+        }
+        fbht.node_println();
     }
 
 

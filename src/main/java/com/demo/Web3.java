@@ -71,7 +71,7 @@ public class Web3 {
         Credentials credentials = Credentials.create(secretKey);
         BigInteger contractGasLimit = DefaultGasProvider.GAS_LIMIT;
         BigInteger contractGasPrice = DefaultGasProvider.GAS_PRICE;
-        RawTransaction rawTransaction=RawTransaction.createTransaction(nonce,contractGasPrice,contractGasLimit,toAddress,ConvertToWei("5",ETHER),"pay");
+        RawTransaction rawTransaction=RawTransaction.createTransaction(nonce,contractGasPrice,contractGasLimit,toAddress,ConvertToWei("10",ETHER),"pay");
         byte []signedMessage= TransactionEncoder.signMessage(rawTransaction,credentials);
         String hexValue = Numeric.toHexString(signedMessage);
         EthSendTransaction ethSendTransaction = null;

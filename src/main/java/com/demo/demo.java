@@ -3,41 +3,48 @@ package com.demo;
 
 
 import com.demo.FBHT.FBHT;
+import com.demo.contract.Refund;
+import org.web3j.tx.Contract;
 
-import static org.web3j.utils.Convert.Unit.ETHER;
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.ExecutionException;
+
 
 public class demo {
 
     public static void main(String args[]) {
 //        String url="https://ropsten.infura.io/v3/";
-//        String privatekey="";
-//        Web3 web3=new Web3();
-//        web3.GetMiningStatus();
-//        String contractAddress="0xd44af5c682157f493ba2ebede6e0506428debf67";
-//        String contractAddress="";
-//        String contractName="Refund";
-//
-//        System.out.println(web3.GetMiningStatus());
-//        System.out.println(web3.ConvertToWei("1", ETHER));
-//        System.out.println(web3.ConvertFromWei("5000000000000000000",ETHER));
-//        Contract refund=web3.LoadContract(privatekey,contractName,contractAddress);
-//        System.out.println(((Refund)refund));
-//        web3.SignTransaction(privatekey,web3.GetNonce("0xc222fDe7CaE05d8514DF13C901e4BEa3F23523cf"),contractAddress);
+        String privatekey="43cbbbf7643cd3f8bdf54d70014cd5fcc313b243aadec7081d16c1ad04ee4b8f";
+        Web3 web3=new Web3();
+        String contractAddress="0x9683eeb68fe0d3df151559670c83a40fbfd8472b";
+        String contractName="Refund";
+        Contract refund=web3.LoadContract(privatekey,contractName,contractAddress);
+
+        web3.SignTransaction(privatekey,web3.GetNonce("0xA2Be5Cc6a7683EA3E3b0405E3169111db7DaC31A"),contractAddress);
+        try {
+            System.out.println(((Refund)refund).getBalance().sendAsync().get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        FBHT fbht=new FBHT(4);
+
+        for(int i=0;i<8;i++){
+            fbht.put(i+"",i+"");
+        }
+        fbht.node_println();
+
 //        try {
-//            System.out.println(((Refund)refund).refundBalance().sendAsync().get());
+//            System.out.println(((Refund)refund).setTree().sendAsync().get());
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        } catch (ExecutionException e) {
 //            e.printStackTrace();
 //        }
-//        System.out.println(((Refund)refund).getBalance().send());
-//        System.out.println(((Refund)refund).refundBalance().send());
-//        web3.SignTransaction();
-        FBHT fbht=new FBHT(4);
-        for(int i=0;i<8;i++){
-            fbht.put(i+"");
-        }
-        fbht.node_println();
     }
 
 

@@ -13,6 +13,9 @@ public class ContractFactory {
         if (contractName.equalsIgnoreCase("Refund")) {
             return new Refund(contractAddress,web3j,credentials,contractGasProvider);
         }
+        if (contractName.equalsIgnoreCase("Auth")){
+            return new Auth(contractAddress,web3j,credentials,contractGasProvider);
+        }
         return null;
     }
     //not finish

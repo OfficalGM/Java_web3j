@@ -17,7 +17,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -37,57 +39,30 @@ public class demo {
         String contractAddress="0x1478a2b11a36b67284422038abfedf5b6ba96c6c";
         String contractName="Auth";
         Contract auth=web3.LoadContract(privatekey,contractName,contractAddress);
-        Credentials credentials = Credentials.create(privatekey);
-        System.out.println("Address: " + credentials.getAddress());
-        String str="AA";
+        web3.signData(privatekey,"AA");
+
+        FBHT fbht=new FBHT(3);
+        for(int i=0;i<2;i++){
+            fbht.put(i+"");
+        }
+        fbht.node_println();
+//        System.out.println(fbht.calcLeafIndex("0"));//5
+//        System.out.println(fbht.calcLeafIndex("1"));//7
+        List<byte[]> list=fbht.getSlice("0");
         try {
-            Sign.SignatureData signature=Sign.signMessage(str.getBytes("UTF-8"),credentials.getEcKeyPair());
-            byte[] r=signature.getR();
-            byte[] s=signature.getS();
-            BigInteger v= new BigInteger(signature.getV()+"");
-            byte[] hash=Hash.sha3(str.getBytes("UTF-8"));
-            String respond=((Auth)auth).verify(hash,v,r,s).sendAsync().get();
-            System.out.println(respond);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+
+            System.out.println(((Auth)auth).SliceRootHash(list).sendAsync().get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
+//        ((Auth)auth).SliceRootHash() list bytes
 
-        //        web3.SignTransaction(privatekey,web3.GetNonce("0xA2Be5Cc6a7683EA3E3b0405E3169111db7DaC31A"),contractAddress);
-//        try {
-//            System.out.println(((Refund)refund).getBalance().sendAsync().get());
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
-
-//        FBHT fbht=new FBHT(3);
-////        fbht.node_println();
-//        for(int i=0;i<8;i++){
-//            fbht.put(i+"");
-//        }
-//        fbht.node_println();
-//        System.out.println(Arrays.toString(fbht.nodes[1].hash));
-//        try {
-////            ((Auth)auth).setTree(fbht.nodes[1].hash).sendAsync().get();
-//            byte[] c=((Auth)auth).tree(BigInteger.ONE).sendAsync().get(10, TimeUnit.SECONDS);
-//
-////            System.out.println(Arrays.toString(c));
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        } catch (TimeoutException e) {
-//            e.printStackTrace();
-//        }
-
-
+//        byte []
     }
+
     public static Properties Load(){
         Properties properties = new Properties();
         String configFile = "config.properties";

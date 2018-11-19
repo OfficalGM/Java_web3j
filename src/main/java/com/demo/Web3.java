@@ -1,9 +1,8 @@
 package com.demo;
 
+import com.demo.contract.Auth;
 import com.demo.contract.ContractFactory;
-import org.web3j.crypto.Credentials;
-import org.web3j.crypto.RawTransaction;
-import org.web3j.crypto.TransactionEncoder;
+import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
@@ -15,9 +14,12 @@ import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.concurrent.ExecutionException;
+
 import static org.web3j.utils.Convert.Unit.ETHER;
 
 public class Web3 {
@@ -53,12 +55,13 @@ public class Web3 {
         BigInteger value = Convert.fromWei(_value, uint).toBigInteger();
         return value;
     }
-    public Contract LoadContract(String secretKey,String contractName, String contractAddress) {
+
+    public Contract LoadContract(String secretKey, String contractName, String contractAddress) {
         Credentials credentials = Credentials.create(secretKey);
         Contract contract = null;
         ContractFactory contractFactory = new ContractFactory();
         try {
-            ContractGasProvider contractGasProvider=contractFactory.GetInfo();
+            ContractGasProvider contractGasProvider = contractFactory.GetInfo();
             contract = contractFactory.LoadContract(contractName, contractAddress, web3j, credentials, contractGasProvider);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,12 +70,12 @@ public class Web3 {
     }
 
     //簽署交易
-    public String SignTransaction(String secretKey,BigInteger nonce,String toAddress) {
+    public String SignTransaction(String secretKey, BigInteger nonce, String toAddress) {
         Credentials credentials = Credentials.create(secretKey);
         BigInteger contractGasLimit = DefaultGasProvider.GAS_LIMIT;
         BigInteger contractGasPrice = DefaultGasProvider.GAS_PRICE;
-        RawTransaction rawTransaction=RawTransaction.createTransaction(nonce,contractGasPrice,contractGasLimit,toAddress,ConvertToWei("10",ETHER),"pay");
-        byte []signedMessage= TransactionEncoder.signMessage(rawTransaction,credentials);
+        RawTransaction rawTransaction = RawTransaction.createTransaction(nonce, contractGasPrice, contractGasLimit, toAddress, ConvertToWei("10", ETHER), "pay");
+        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
         String hexValue = Numeric.toHexString(signedMessage);
         EthSendTransaction ethSendTransaction = null;
         try {
@@ -85,7 +88,8 @@ public class Web3 {
         }
         return null;
     }
-    public BigInteger GetNonce(String address){
+
+    public BigInteger GetNonce(String address) {
         EthGetTransactionCount ethGetTransactionCount = null;
         try {
             ethGetTransactionCount = web3j.ethGetTransactionCount(
@@ -96,4 +100,18 @@ public class Web3 {
         return ethGetTransactionCount.getTransactionCount();
     }
 
+    public void signData(String secretKey, String data) {
+        Credentials credentials = Credentials.create(secretKey);
+        try {
+
+            Sign.SignatureData signature = Sign.signMessage(data.getBytes("UTF-8"), credentials.getEcKeyPair());
+            byte[] hash = Hash.sha3(data.getBytes("UTF-8"));
+            BigInteger v = new BigInteger(signature.getV() + "");
+            byte[] r = signature.getR();
+            byte[] s = signature.getS();
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 }

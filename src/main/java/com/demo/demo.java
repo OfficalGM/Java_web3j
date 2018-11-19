@@ -5,8 +5,8 @@ package com.demo;
 import com.demo.FBHT.FBHT;
 import com.demo.contract.Refund;
 import org.web3j.tx.Contract;
-
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 
@@ -34,6 +34,7 @@ public class demo {
         for(int i=0;i<1;i++){
             fbht.put(i+"");
         }
+
 //        fbht.node_println();
 
 //        try {
@@ -46,6 +47,7 @@ public class demo {
 //            e.printStackTrace();
 //        }
     }
+
 
 
 

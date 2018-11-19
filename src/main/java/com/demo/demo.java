@@ -5,14 +5,23 @@ package com.demo;
 import com.demo.FBHT.FBHT;
 import com.demo.contract.Refund;
 import org.web3j.tx.Contract;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 
 public class demo {
 
     public static void main(String args[]) {
+        Properties properties=Load();
+        String web3url=properties.getProperty("web3url");
+        String privatekey=properties.getProperty("privatekey");
+        System.out.println(privatekey);
 //        String url="https://ropsten.infura.io/v3/";
 //        String privatekey="43cbbbf7643cd3f8bdf54d70014cd5fcc313b243aadec7081d16c1ad04ee4b8f";
 //        Web3 web3=new Web3();
@@ -29,23 +38,30 @@ public class demo {
 //            e.printStackTrace();
 //        }
 
-        FBHT fbht=new FBHT(3);
-        fbht.node_println();
-        for(int i=0;i<1;i++){
-            fbht.put(i+"");
-        }
+//        FBHT fbht=new FBHT(3);
+//        fbht.node_println();
+//        for(int i=0;i<8;i++){
+//            fbht.put(i+"");
+//        }
+//        fbht.node_println();
 
 //        fbht.node_println();
 
-//        try {
-//            System.out.println(((Refund)refund).setTree().sendAsync().get());
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
+
+
+
+
+    }
+    public static Properties Load(){
+        Properties properties = new Properties();
+        String configFile = "config.properties";
+        try {
+            properties.load(new FileInputStream(configFile));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return properties;
     }
 
 

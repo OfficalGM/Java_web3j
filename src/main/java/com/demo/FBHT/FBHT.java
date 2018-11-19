@@ -1,6 +1,7 @@
 package com.demo.FBHT;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import static com.demo.FBHT.HashUtil.sha256;
 
@@ -100,12 +101,9 @@ public class FBHT {
     public void node_println() {
         for (int i = 1; i < nodes.length; i++) {
 //            System.out.println(i + " " + nodes[i].hash);
-            for(int j=0;j<nodes[i].hash.length;j++){
-                System.out.print(i +" " +nodes[i].hash[j]);
+            System.out.println(i+": "+Arrays.toString(nodes[i].hash));
 
-            }
-
-            System.out.println();
+//            System.out.println();
 //            System.out.println(i+" "+sha256(nodes[i].hash));
         }
     }

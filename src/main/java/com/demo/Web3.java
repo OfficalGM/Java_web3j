@@ -2,6 +2,7 @@ package com.demo;
 
 import com.demo.contract.ContractFactory;
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.Hash;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
@@ -94,6 +95,9 @@ public class Web3 {
             e.printStackTrace();
         }
         return ethGetTransactionCount.getTransactionCount();
+    }
+    public byte[] sha3(byte base[]){
+        return Hash.sha3(base);
     }
 
 }

@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -52,13 +53,11 @@ public class demo {
 //        List<byte[]> list=fbht.getSlice("4");
 
         try {
-            byte[] a= Hash.sha3("AA".getBytes("UTF-8"));
+            byte[] a= Hash.sha3("AA".getBytes(StandardCharsets.UTF_8));
             System.out.println(((Auth)auth).setTest(a,"AA").sendAsync().get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 

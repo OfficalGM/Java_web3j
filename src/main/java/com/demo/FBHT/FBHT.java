@@ -69,10 +69,10 @@ public class FBHT {
             if (i % 2 == 1) {
                 slice.add(nodes[i].hash);
                 slice.add(nodes[i-1].hash);
-
             } else {
-                slice.add(nodes[i].hash);
                 slice.add(nodes[i+1].hash);
+                slice.add(nodes[i].hash);
+
             }
         }
         slice.add(nodes[1].hash);

@@ -32,14 +32,13 @@ public class demo {
         Properties properties=Load();
         String web3url=properties.getProperty("web3url");
         String privatekey=properties.getProperty("privatekey");
-//        System.out.println(privatekey);
 //        String url="https://ropsten.infura.io/v3/";
 
         Web3 web3=new Web3();
         String contractAddress="0x1478a2b11a36b67284422038abfedf5b6ba96c6c";
         String contractName="Auth";
         Contract auth=web3.LoadContract(privatekey,contractName,contractAddress);
-        web3.signData(privatekey,"AA");
+//        web3.signData(privatekey,"AA");
 
         FBHT fbht=new FBHT(3);
         for(int i=0;i<2;i++){
@@ -50,7 +49,6 @@ public class demo {
 //        System.out.println(fbht.calcLeafIndex("1"));//7
         List<byte[]> list=fbht.getSlice("0");
         try {
-
             System.out.println(((Auth)auth).SliceRootHash(list).sendAsync().get());
         } catch (InterruptedException e) {
             e.printStackTrace();

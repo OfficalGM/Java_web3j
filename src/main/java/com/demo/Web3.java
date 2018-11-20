@@ -106,7 +106,7 @@ public class Web3 {
         try {
             List<byte[]> list=new ArrayList<>();
             Sign.SignatureData signature = Sign.signMessage(data.getBytes("UTF-8"), credentials.getEcKeyPair());
-            list.add(Hash.sha3(data.getBytes("UTF-8"));
+            list.add(Hash.sha3(data.getBytes("UTF-8")));
             byte v[]=new byte[1];
             v[0]=signature.getV();
             list.add(v);
@@ -116,5 +116,6 @@ public class Web3 {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

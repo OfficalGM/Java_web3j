@@ -1,8 +1,8 @@
 package com.demo;
 
 
-
 import com.demo.FBHT.FBHT;
+import com.demo.FBHT.HashUtil;
 import com.demo.contract.Auth;
 import org.web3j.crypto.Hash;
 import org.web3j.tx.Contract;
@@ -23,15 +23,15 @@ import java.util.concurrent.ExecutionException;
 
 public class demo {
     public static void main(String args[]) {
-        Properties properties=Load();
-        String web3url=properties.getProperty("web3url");
-        String privatekey=properties.getProperty("privatekey");
+        Properties properties = Load();
+        String web3url = properties.getProperty("web3url");
+        String privatekey = properties.getProperty("privatekey");
 //        String url="https://ropsten.infura.io/v3/";
 
-        Web3 web3=new Web3();
-        String contractAddress="0x33d528d43176854bf2e2041a2ff83525f2438b07";
-        String contractName="Auth";
-        Contract auth=web3.LoadContract(privatekey,contractName,contractAddress);
+        Web3 web3 = new Web3();
+        String contractAddress = "0x1478a2b11a36b67284422038abfedf5b6ba96c6c";
+        String contractName = "Auth";
+        Contract auth = web3.LoadContract(privatekey, contractName, contractAddress);
 //        System.out.println(web3.signData(privatekey,"AA"));
 //        try {
 //            byte a[]=((Auth)auth).stringToBytes32("AA").sendAsync().get();
@@ -42,44 +42,41 @@ public class demo {
 //        } catch (ExecutionException e) {
 //            e.printStackTrace();
 //        }
-        FBHT fbht=new FBHT(3);
-        for(int i=0;i<2;i++){
-            fbht.put(i+"");
+        FBHT fbht = new FBHT(3);
+        for (int i = 0; i < 2; i++) {
+            fbht.put(i + "");
         }
         fbht.node_println();
 //        System.out.println(fbht.calcLeafIndex("0"));//5
-//        System.out.println(fbht.calcLeafIndex("1"));//7
-//        System.out.println(fbht.calcLeafIndex("4"));//6
-//        List<byte[]> list=fbht.getSlice("4");
+        System.out.println(fbht.calcLeafIndex("4"));//7
+        List<byte[]> list=fbht.getSlice("4");
+        for(int i=0;i<list.size();i++){
+            byte f[]=list.get(i);
+            System.out.println(Arrays.toString(f));
+        }
+        System.out.println();
 
         try {
-//            byte[] a="AA".getBytes(StandardCharsets.UTF_8);
-//            System.out.println(a);
-//            System.out.println(Arrays.toString(a));
+            System.out.println(((Auth)auth).SliceRootHash(new BigInteger("6"),list).sendAsync().get());
+            byte[] a = fbht.nodes[6].hash;
+            byte[] b = fbht.nodes[7].hash;
+            byte[] c = fbht.nodes[3].hash;
+            byte[] d = HashUtil.sha3(a, b);
+            byte e[]=((Auth)auth).getKeccak256(a,b).sendAsync().get();
 
-            byte[] a="AA".getBytes(StandardCharsets.UTF_8);
-            for(int i=0;i<32;i++){
-                
-            }
-            byte[] b=Hash.sha3("AA".getBytes(StandardCharsets.UTF_8));
-            System.out.println(a);
-            System.out.println(b);
-            System.out.println(Arrays.toString(a));
-            System.out.println(Arrays.toString(b));
-            System.out.println(((Auth)auth).setTest(Hash.sha3("AA".getBytes(StandardCharsets.UTF_8)),a).sendAsync().get());
+            System.out.println(Arrays.toString(e));
+            System.out.println(Arrays.toString(c));
+            System.out.println(((Auth) auth).setTest(c, e).sendAsync().get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-//        for(int i=list.size()-1;i>=0;i--){
-//            byte[] s=list.get(i);
-//            System.out.println(Numeric.toHexStringNoPrefix(s));
-//        }
-//
+
     }
-    public static Properties Load(){
+
+    public static Properties Load() {
         Properties properties = new Properties();
         String configFile = "config.properties";
         try {
@@ -90,11 +87,6 @@ public class demo {
         }
         return properties;
     }
-
-
-
-
-
 
 
 }

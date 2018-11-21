@@ -16,7 +16,7 @@ public class Node {
         this.left = left;
         this.right = right;
         if (left != null || right != null) {
-            this.hash = HashUtil.sha256(this.left.hash , this.right.hash);
+            this.hash = HashUtil.sha3(this.left.hash , this.right.hash);
         }else{
 //            this.hashmap=new HashMap<>();
         }

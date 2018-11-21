@@ -3,16 +3,17 @@ package com.demo.FBHT;
 import org.web3j.crypto.Hash;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 
 public class HashUtil {
-    public static byte[] sha256(String base) {
+    public static byte[] sha3(String base) {
         try {
 //            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = Hash.sha3(base.getBytes("UTF-8"));
+            byte[] hash = Hash.sha3(base.getBytes(StandardCharsets.UTF_8));
 //            StringBuffer hexString = new StringBuffer();
 //            for (int i = 0; i < hash.length; i++) {
 //                String hex = Integer.toHexString(0xff & hash[i]);
@@ -27,7 +28,7 @@ public class HashUtil {
         }
     }
 
-    public static byte[] sha256(byte[] a,byte[]b){
+    public static byte[] sha3(byte[] a,byte[]b){
         byte[] c = new byte[a.length + b.length];
         System.arraycopy(a, 0, c, 0, a.length);
         System.arraycopy(b, 0, c, a.length, b.length);

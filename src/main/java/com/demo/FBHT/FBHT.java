@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.demo.FBHT.HashUtil.sha256;
+import static com.demo.FBHT.HashUtil.sha3;
 
 public class FBHT {
 
@@ -41,7 +41,7 @@ public class FBHT {
 
     public void put(String path) {
         int index = calcLeafIndex(path);
-        byte[] p = sha256(path);
+        byte[] p = sha3(path);
         nodes[index].hash = p;
         update_node(index);
     }
@@ -52,9 +52,9 @@ public class FBHT {
         int tree_height = height;
         while (tree_height > root_height) {
             if (index % 2 == 1) {
-                nodes[index / 2].hash = sha256(nodes[index - 1].hash, nodes[index].hash);
+                nodes[index / 2].hash = sha3(nodes[index - 1].hash, nodes[index].hash);
             } else {
-                nodes[index / 2].hash = sha256(nodes[index].hash, nodes[index + 1].hash);
+                nodes[index / 2].hash = sha3(nodes[index].hash, nodes[index + 1].hash);
             }
             index = index / 2;
             tree_height--;

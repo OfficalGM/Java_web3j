@@ -29,7 +29,7 @@ public class demo {
 //        String url="https://ropsten.infura.io/v3/";
 
         Web3 web3=new Web3();
-        String contractAddress="0x1478a2b11a36b67284422038abfedf5b6ba96c6c";
+        String contractAddress="0x33d528d43176854bf2e2041a2ff83525f2438b07";
         String contractName="Auth";
         Contract auth=web3.LoadContract(privatekey,contractName,contractAddress);
 //        System.out.println(web3.signData(privatekey,"AA"));
@@ -53,14 +53,20 @@ public class demo {
 //        List<byte[]> list=fbht.getSlice("4");
 
         try {
-//            byte[] a=
-            byte[] a=((Auth)auth).getKeccak256().sendAsync().get();
+//            byte[] a="AA".getBytes(StandardCharsets.UTF_8);
+//            System.out.println(a);
+//            System.out.println(Arrays.toString(a));
+
+            byte[] a="AA".getBytes(StandardCharsets.UTF_8);
+            for(int i=0;i<32;i++){
+                
+            }
             byte[] b=Hash.sha3("AA".getBytes(StandardCharsets.UTF_8));
             System.out.println(a);
             System.out.println(b);
             System.out.println(Arrays.toString(a));
             System.out.println(Arrays.toString(b));
-            System.out.println(((Auth)auth).setTest(Hash.sha3("AA".getBytes(StandardCharsets.UTF_8)),"AA").sendAsync().get());
+            System.out.println(((Auth)auth).setTest(Hash.sha3("AA".getBytes(StandardCharsets.UTF_8)),a).sendAsync().get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

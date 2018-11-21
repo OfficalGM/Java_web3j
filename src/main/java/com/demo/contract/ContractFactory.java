@@ -10,9 +10,9 @@ import org.web3j.tx.gas.DefaultGasProvider;
 public class ContractFactory {
 
     public Contract LoadContract(String contractName, String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        if (contractName.equalsIgnoreCase("Refund")) {
-            return new Refund(contractAddress,web3j,credentials,contractGasProvider);
-        }
+//        if (contractName.equalsIgnoreCase("Refund")) {
+//            return new Refund(contractAddress,web3j,credentials,contractGasProvider);
+//        }
         if (contractName.equalsIgnoreCase("Auth")){
             return new Auth(contractAddress,web3j,credentials,contractGasProvider);
         }

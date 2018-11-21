@@ -53,8 +53,14 @@ public class demo {
 //        List<byte[]> list=fbht.getSlice("4");
 
         try {
-            byte[] a= Hash.sha3("AA".getBytes(StandardCharsets.UTF_8));
-            System.out.println(((Auth)auth).setTest(a,"AA").sendAsync().get());
+//            byte[] a=
+            byte[] a=((Auth)auth).getKeccak256().sendAsync().get();
+            byte[] b=Hash.sha3("AA".getBytes(StandardCharsets.UTF_8));
+            System.out.println(a);
+            System.out.println(b);
+            System.out.println(Arrays.toString(a));
+            System.out.println(Arrays.toString(b));
+            System.out.println(((Auth)auth).setTest(Hash.sha3("AA".getBytes(StandardCharsets.UTF_8)),"AA").sendAsync().get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

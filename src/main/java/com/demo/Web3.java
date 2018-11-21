@@ -108,10 +108,10 @@ public class Web3 {
             Sign.SignatureData signature = Sign.signMessage(data.getBytes("UTF-8"), credentials.getEcKeyPair());
             list.add(Hash.sha3(data.getBytes("UTF-8")));
             byte v[]=new byte[1];
-            v[0]=signature.getV();
+            v[0]=signature.getV();//1
             list.add(v);
-            list.add(signature.getR());
-            list.add(signature.getS());
+            list.add(signature.getR());//32
+            list.add(signature.getS());//32
             return list;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

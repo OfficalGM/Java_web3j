@@ -6,7 +6,7 @@ public class Node {
 
     public int id;
 
-    public byte[] hash=new byte[32];
+    public byte[] hash;
     public Node left;
     public Node right;
 //    public HashMap<String, String> hashmap;
@@ -15,6 +15,7 @@ public class Node {
         this.id = id;
         this.left = left;
         this.right = right;
+        this.hash=new byte[32];
         if (left != null || right != null) {
             this.hash = HashUtil.sha3(this.left.hash , this.right.hash);
         }else{

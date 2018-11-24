@@ -17,6 +17,7 @@ import org.web3j.utils.Numeric;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -103,19 +104,16 @@ public class Web3 {
 
     public List<byte[]> signData(String secretKey, String data) {
         Credentials credentials = Credentials.create(secretKey);
-        try {
-            List<byte[]> list=new ArrayList<>();
-            Sign.SignatureData signature = Sign.signMessage(data.getBytes("UTF-8"), credentials.getEcKeyPair());
-            list.add(Hash.sha3(data.getBytes("UTF-8")));
-            byte v[]=new byte[1];
-            v[0]=signature.getV();//1
-            list.add(v);
-            list.add(signature.getR());//32
-            list.add(signature.getS());//32
-            return list;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+        List<byte[]> list = new ArrayList<>();
+        Sign.SignatureData signature = Sign.signMessage(data.getBytes(StandardCharsets.UTF_8), credentials.getEcKeyPair());
+        list.add(Hash.sha3(data.getBytes(StandardCharsets.UTF_8)));
+        byte v[] = new byte[1];
+        v[0] = signature.getV();//1
+        list.add(v);
+        list.add(signature.getR());//32
+        list.add(signature.getS());//32
+        return list;
+
     }
 }

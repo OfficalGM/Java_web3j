@@ -26,7 +26,7 @@ import static org.web3j.utils.Convert.Unit.ETHER;
 
 public class Web3 {
     public String url;
-    private Web3j web3j;
+    public Web3j web3j;
 
     public Web3() {
         web3j = Web3j.build(new HttpService());

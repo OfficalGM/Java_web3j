@@ -38,32 +38,30 @@ public class FBHTree {
         for (int i = 0; i < 2; i++) {
             index += digest[i] << (i * 8);
         }
-        return Math.abs(index) % (1 << (this.height - 1))+leafHeight;
+//        return Math.abs(index) % (1 << (this.height - 1)) + leafHeight;
+        return Math.abs(index) % (1 << (this.height - 1));
     }
 
     public void put(String tx) {
-
         int index = calcLeafIndex(tx);
-
-        byte[] p = sha3(tx);
-        nodes[index].pbPair.add(p);
+        byte[] digest = sha3(tx);
+        nodes[index].pbPair.add(digest);
         updateLeafNode(index);
     }
-    private void updateLeafNode(int index) {
 
-        byte[] digest = new byte[nodes[index].pbPair.size()*32];
-        for(int i=0;i<nodes[index].pbPair.size();i++) {
+    public void updateLeafNode(int index) {
+        byte[] digest = new byte[nodes[index].pbPair.size() * 32];
+        for (int i = 0; i < nodes[index].pbPair.size(); i++) {
             for (int j = 0; j < 32; j++) {
                 digest[j + i * 32] = nodes[index].pbPair.get(i)[j];
             }
         }
-        digest= Hash.sha3(digest);
-        nodes[index].hash=digest;
-        updateNode(index);
+        digest = Hash.sha3(digest);
+        nodes[index].hash = digest;
+        updateInternalNode(index);
     }
 
-    //沒檢查
-    private void updateNode(int index) {
+    public void updateInternalNode(int index) {
         int root_height = 1;
         int tree_height = height;
         while (tree_height > root_height) {
@@ -77,9 +75,13 @@ public class FBHTree {
         }
     }
 
-    public List<byte[]> getSlice(String base) {
+    public byte[] getRootHash() {
+        return nodes[1].hash;
+    }
+
+    public List<byte[]> getSlice(String tx) {
         List<byte[]> slice = new ArrayList<byte[]>();
-        int index = calcLeafIndex(base);
+        int index = calcLeafIndex(tx);
 
         for (int i = index; i > 1; i = i / 2) {
             if (i % 2 == 1) {

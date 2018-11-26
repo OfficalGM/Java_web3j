@@ -1,8 +1,7 @@
 package com.demo.FBHT;
 
-import org.web3j.abi.datatypes.generated.Bytes32;
+import org.web3j.crypto.Hash;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,7 +38,7 @@ public class FBHTree {
         for (int i = 0; i < 2; i++) {
             index += digest[i] << (i * 8);
         }
-        return Math.abs(index) % (1 << (this.height - 1));
+        return Math.abs(index) % (1 << (this.height - 1))+leafHeight;
     }
 
     public void put(String tx) {
@@ -47,19 +46,23 @@ public class FBHTree {
         int index = calcLeafIndex(tx);
 
         byte[] p = sha3(tx);
-        int l = 0;
-        try {
-            l = nodes[index].pbPair.size();
-        } catch (NullPointerException ex) {
-        }
-        System.out.println(l);
-        System.out.println(p);
-        nodes[index].pbPair.put(l, p);
-//        updateNode(index);
+        nodes[index].pbPair.add(p);
+        updateLeafNode(index);
+    }
+    private void updateLeafNode(int index) {
 
+        byte[] digest = new byte[nodes[index].pbPair.size()*32];
+        for(int i=0;i<nodes[index].pbPair.size();i++) {
+            for (int j = 0; j < 32; j++) {
+                digest[j + i * 32] = nodes[index].pbPair.get(i)[j];
+            }
+        }
+        digest= Hash.sha3(digest);
+        nodes[index].hash=digest;
+        updateNode(index);
     }
 
-
+    //沒檢查
     private void updateNode(int index) {
         int root_height = 1;
         int tree_height = height;

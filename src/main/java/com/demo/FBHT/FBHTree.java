@@ -10,18 +10,18 @@ import java.util.List;
 
 import static com.demo.FBHT.HashUtil.sha3;
 
-public class FBHT {
+public class FBHTree {
 
     private int height;
     public Node[] nodes;
-    public int leaf_height;
+    public int leafHeight;
 
-    public FBHT(int treeHeight) {
+    public FBHTree(int treeHeight) {
         if (treeHeight < 0) {
             throw new IllegalArgumentException("The minimum value for tree height is 1.");
         }
         this.height = treeHeight;
-        this.leaf_height = (1 << (height - 1));
+        this.leafHeight = (1 << (height - 1));
         this.nodes = new Node[1 << treeHeight];
         for (int i = nodes.length - 1; i > 0; i--) {
             if (i >= (1 << (height - 1))) {//leaf node
@@ -33,21 +33,34 @@ public class FBHT {
 
     }
 
-    public int calcLeafIndex(String path) {
-        BigInteger index = HashUtil.sha256_BigInteger(path);
-        index = index.mod(new BigInteger(leaf_height + ""));
-        return leaf_height + index.intValue();
+    public int calcLeafIndex(String tx) {
+        byte digest[] = HashUtil.sha256(tx);
+        int index = 0;
+        for (int i = 0; i < 2; i++) {
+            index += digest[i] << (i * 8);
+        }
+        return Math.abs(index) % (1 << (this.height - 1));
     }
 
-    public void put(String path) {
-        int index = calcLeafIndex(path);
-        byte[] p = sha3(path);
-        nodes[index].hash = p;
-        update_node(index);
+    public void put(String tx) {
+
+        int index = calcLeafIndex(tx);
+
+        byte[] p = sha3(tx);
+        int l = 0;
+        try {
+            l = nodes[index].pbPair.size();
+        } catch (NullPointerException ex) {
+        }
+        System.out.println(l);
+        System.out.println(p);
+        nodes[index].pbPair.put(l, p);
+//        updateNode(index);
+
     }
 
 
-    private void update_node(int index) {
+    private void updateNode(int index) {
         int root_height = 1;
         int tree_height = height;
         while (tree_height > root_height) {
@@ -65,12 +78,12 @@ public class FBHT {
         List<byte[]> slice = new ArrayList<byte[]>();
         int index = calcLeafIndex(base);
 
-        for (int i = index; i > 1; i=i/2) {
+        for (int i = index; i > 1; i = i / 2) {
             if (i % 2 == 1) {
                 slice.add(nodes[i].hash);
-                slice.add(nodes[i-1].hash);
+                slice.add(nodes[i - 1].hash);
             } else {
-                slice.add(nodes[i+1].hash);
+                slice.add(nodes[i + 1].hash);
                 slice.add(nodes[i].hash);
 
             }
@@ -81,7 +94,7 @@ public class FBHT {
     }
 
 
-    public void node_println() {
+    public void nodePrintln() {
         for (int i = 1; i < nodes.length; i++) {
 //            System.out.println(i + " " + nodes[i].hash);
             System.out.println(i + ": " + Arrays.toString(nodes[i].hash));

@@ -1,4 +1,4 @@
-import com.demo.FBHT.FBHT;
+import com.demo.FBHT.FBHTree;
 import com.demo.Web3;
 import com.demo.contract.Auth;
 import org.junit.Assert;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 
 
 public class TestAuth {
-    FBHT fbht = new FBHT(3);
+    FBHTree fbht = new FBHTree(3);
 
     /**
      * input
@@ -49,7 +49,7 @@ public class TestAuth {
         for (int i = 0; i < 2; i++) {
             fbht.put(i + "");
         }
-        fbht.node_println();
+        fbht.nodePrintln();
         Web3 web3 = new Web3();
         //contract input
         String contractAddress = "0xf3fbadb5887a21a22215d7a86e8b41d0a6dc1efd";

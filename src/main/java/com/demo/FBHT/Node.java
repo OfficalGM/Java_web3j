@@ -1,5 +1,6 @@
 package com.demo.FBHT;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Node {
@@ -9,17 +10,19 @@ public class Node {
     public byte[] hash;
     public Node left;
     public Node right;
-//    public HashMap<String, String> hashmap;
+//    public ArrayList<byte[]> pbPair;
+
+    public HashMap<Integer, byte[]> pbPair;
 
     public Node(int id, Node left, Node right) {
         this.id = id;
         this.left = left;
         this.right = right;
-        this.hash=new byte[32];
+        this.hash = new byte[32];
         if (left != null || right != null) {
-            this.hash = HashUtil.sha3(this.left.hash , this.right.hash);
-        }else{
-//            this.hashmap=new HashMap<>();
+            this.hash = HashUtil.sha3(this.left.hash, this.right.hash);
+        } else {
+            this.pbPair = new HashMap();
         }
     }
 }

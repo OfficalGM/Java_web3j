@@ -39,7 +39,7 @@ public class FBHTree {
             index += digest[i] << (i * 8);
         }
 //        return Math.abs(index) % (1 << (this.height - 1)) + leafHeight;
-        return Math.abs(index) % (1 << (this.height - 1));
+        return Math.abs(index) % (1 << (this.height - 1))+leafHeight;
     }
 
     public void put(String tx) {
